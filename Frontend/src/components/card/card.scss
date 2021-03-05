@@ -21,11 +21,15 @@
                 outline: none;
                 background-color: #cccccc;
             }
-            &.correct-button:focus {
+            &.correct-button {
+                &:focus, &:disabled {
                 background-color: #D1FACD;
+                }
             }
-            &.incorrect-button:focus {
+            &.incorrect-button {
+                &:focus, &:disabled {
                 background-color: #ffdddd;
+                }
             }
         }
     }

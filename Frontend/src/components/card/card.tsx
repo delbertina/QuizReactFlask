@@ -1,25 +1,38 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import './card.scss';
 
-class Card extends Component {
+interface Props {
+    onAlertChange: Function
+}
+interface State {
+    totalCorrect: number,
+    correctId: number,
+    questionNum: number,
+    questionText: string,
+    possibleAnswers: string[],
+    isLoading: boolean
+}
 
-    constructor(props) {
+class Card extends Component<Props, State>  {
+
+    public constructor(props: Props) {
         super(props);
         this.state = {
             totalCorrect: 0,
-            correctId: 0,
+            correctId: -1,
             questionNum: 0,
             questionText: '',
             possibleAnswers: ['', '', '', ''],
-            isLoading: false
+            isLoading: false,
         };
     }
 
-    componentDidMount() {
+    public componentDidMount() {
         this.nextQuestion();
     }
 
-    handleClick(index) {
+    private handleClick(index: number) {
+        this.setState({ isLoading: true });
         if (index === this.state.correctId) {
             this.props.onAlertChange('correct');
             this.setState({
@@ -33,7 +46,7 @@ class Card extends Component {
         }, 2000);
     }
 
-    nextQuestion() {
+    private nextQuestion() {
         this.setState({ isLoading: true });
         fetch('http://127.0.0.1:5000/api/random_question/')
             .then(res => res.json())
@@ -51,11 +64,8 @@ class Card extends Component {
             }).catch(console.log);
     }
 
-    restartQuiz() {
+    public restartQuiz() {
         this.props.onAlertChange('done', this.state.totalCorrect);
-        setTimeout(() => {
-            this.props.onAlertChange('');
-        }, 1500);
         this.setState({
             totalCorrect: 0,
             questionNum: 0,
@@ -63,7 +73,7 @@ class Card extends Component {
         this.nextQuestion();
     }
 
-    render() {
+    public render() {
         return (
             <div className="card" >
                 <div className="card-header">
@@ -125,5 +135,4 @@ class Card extends Component {
         );
     }
 }
-
 export default Card;
