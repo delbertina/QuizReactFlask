@@ -48,7 +48,7 @@ class Card extends Component<Props, State>  {
 
     private nextQuestion() {
         this.setState({ isLoading: true });
-        fetch('http://127.0.0.1:5000/api/random_question/')
+        fetch('http://127.0.0.1:5000/api/question/')
             .then(res => res.json())
             .then((data) => {
                 this.setState({
